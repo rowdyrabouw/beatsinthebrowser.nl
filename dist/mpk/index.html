@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="app.js"></script>
+    <title>MPK</title>
+    <style>
+      .keyboard {
+        margin: 40px auto 0 auto;
+        width: 925px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div style="height: 50px; background-image: url('headphones.svg'); background-position: center; background-repeat: no-repeat"></div>
+      <h1>MIDI - Synthesising<span id="device"></span></h1>
+      <div class="buttons">
+        <button class="button" id="ctx">AudioContext<span class="light"></span></button>
+        <button class="button" id="initMidi">Midi<span class="light"></span></button>
+      </div>
+
+      <div class="keyboard">
+        <div class="top">
+          <div class="pads">
+            <button data-note="20"></button>
+            <button data-note="21"></button>
+            <button data-note="22"></button>
+            <button data-note="23"></button>
+          </div>
+
+          <div style="display: flex; flex-direction: column; width: 160px; margin-left: 60px">
+            <div class="meters">
+              <div id="frequency"></div>
+              <div id="velocity"></div>
+            </div>
+            <div class="knob-surround" data-note="70">
+              <div class="knob"></div>
+            </div>
+            <div style="margin-top: 10px">
+              <input id="knob" type="range" min="0" max="127" step="1" value="12" />
+            </div>
+          </div>
+        </div>
+        <div class="keys">
+          <div class="white">
+            <button data-note="48"></button>
+            <button data-note="50"></button>
+            <button data-note="52"></button>
+            <button data-note="53"></button>
+            <button data-note="55"></button>
+            <button data-note="57"></button>
+            <button data-note="59"></button>
+            <button data-note="60"></button>
+            <button data-note="62"></button>
+            <button data-note="64"></button>
+            <button data-note="65"></button>
+            <button data-note="67"></button>
+            <button data-note="69"></button>
+            <button data-note="71"></button>
+            <button data-note="72"></button>
+          </div>
+          <div class="black">
+            <button data-note="49"></button>
+            <button data-note="51"></button>
+            <button data-note="54"></button>
+            <button data-note="56"></button>
+            <button data-note="58"></button>
+            <button data-note="61"></button>
+            <button data-note="63"></button>
+            <button data-note="66"></button>
+            <button data-note="68"></button>
+            <button data-note="70"></button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

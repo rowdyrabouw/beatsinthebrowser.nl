@@ -1,0 +1,175 @@
+body {
+  background: #000;
+  font-family: "Neutraface Text";
+  color: #f7df1e;
+}
+
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+h1 span span {
+  color: white;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+}
+
+.data {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.data div {
+  height: 70px;
+  width: 100%;
+  font-size: 32px;
+  border: 1px solid #515151;
+  background-color: rgb(20, 20, 20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+.button {
+  border: 1px solid #515151;
+  background-color: rgb(20, 20, 20);
+  color: white;
+  padding: 8px 8px 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 150px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.light {
+  height: 12px;
+  width: 12px;
+  display: inline-block;
+  border: 1px solid #515151;
+  border-radius: 4px;
+}
+.on .light {
+  background-color: rgb(247, 223, 29);
+}
+
+.pads {
+  margin: 24px 0;
+  display: flex;
+  gap: 24px;
+}
+
+.pads button {
+  height: 150px;
+  aspect-ratio: 1/1;
+  display: inline-block;
+  border: 0;
+  background-color: rgb(20, 20, 20);
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px 4px rgb(255, 0, 34);
+  cursor: not-allowed;
+}
+.pads button.active {
+  box-shadow: 0px 0px 8px 4px rgb(247, 223, 29);
+}
+/* knobs */
+.knobs {
+  display: flex;
+}
+
+.knob-surround {
+  background-color: grey;
+  height: 50px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: solid 0.25em #0e0e0e;
+  margin: 0 auto;
+  background: #181818;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #131313), color-stop(1, #666));
+  box-shadow: 0px 0px 8px 4px rgb(255, 0, 34);
+  cursor: not-allowed;
+}
+.knob-surround.active {
+  box-shadow: 0px 0px 8px 4px rgb(247, 223, 29);
+}
+.knob {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+/*keys */
+.keys {
+  display: flex;
+  position: relative;
+}
+.keys button {
+  border: 1px solid #414141;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  cursor: not-allowed;
+}
+.keys .white button.active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(247, 223, 29) 100%);
+}
+.keys .white button {
+  height: 350px;
+  aspect-ratio: 1/6;
+  background-color: white;
+  position: relative;
+}
+.black {
+  position: absolute;
+}
+.keys .black button {
+  height: 250px;
+  aspect-ratio: 1/8;
+  background-color: black;
+  z-index: 1;
+  position: relative;
+}
+.keys .black button.active {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgb(247, 223, 29) 75%);
+}
+
+[data-note="49"] {
+  left: 46px;
+}
+[data-note="51"] {
+  left: 72px;
+}
+[data-note="54"] {
+  left: 162px;
+}
+[data-note="56"] {
+  left: 188px;
+}
+[data-note="58"] {
+  left: 216px;
+}
+[data-note="61"] {
+  left: 306px;
+}
+[data-note="63"] {
+  left: 333px;
+}
+[data-note="66"] {
+  left: 422px;
+}
+[data-note="68"] {
+  left: 448px;
+}
+[data-note="70"] {
+  left: 476px;
+}

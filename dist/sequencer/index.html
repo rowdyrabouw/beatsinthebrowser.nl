@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="Tone.min.js"></script>
+    <script defer src="sequencer.js"></script>
+    <script defer src="patterns.js"></script>
+    <script defer src="heartrate.js"></script>
+  </head>
+  <body>
+    <div style="height: 50px; background-image: url('headphones.svg'); background-position: center; background-repeat: no-repeat"></div>
+    <h1>Sequencer<span id="device"></span></h1>
+    <div class="container">
+      <div class="buttons">
+        <button class="button" id="init">Init<span class="light"></span></button>
+        <button class="button" id="initMidi">Midi<span class="light"></span></button>
+        <button class="button" id="start">Start</button>
+        <button class="button" id="stop">Stop</button>
+      </div>
+
+    <div class="bpm">
+      <button class="button" id="heart">hbpm<span class="light"></span></button>
+
+      <select onchange="loadPattern(this.options[this.selectedIndex].value)">
+        <option value="empty.json"></option>
+        <option value="soul2soul.json">Soul II Soul</option>
+        <option value="amy.json">Amy Winehouse</option>
+        <option value="faithless.json">Faithless</option>
+      </select>
+      <input id="bpm" type="range" min="0" max="200" step="1" value="125"></input>
+      <div><span id="bpmText"></span>&nbsp;bpm</div>
+    </div>
+    <style>
+      @font-face {
+        font-family: "Neutraface Text";
+        src: url("NeutrafaceText-Bold.woff2") format("woff2");
+        font-style: normal;
+        font-display: swap;
+      }
+      body {
+        background: #000;
+        font-family: "Neutraface Text";
+        color: #f7df1e;
+      }
+      span.drum {
+        display: inline-block;
+        width: 92px;
+        height: 60px;
+        position: relative;
+      }
+      span.drum span {
+       position: absolute;
+       line-height: 60px;
+      }
+      label {
+        display: inline-block;
+        height: 60px;
+        aspect-ratio: 1/1;
+        border-radius: 4px;
+        border: 1px solid rgb(120, 120, 120);
+        background-color: rgb(20, 20, 20);
+        margin: 2px;
+        position: relative;
+      }
+      label input {
+          display: none;
+      }
+      label:has(input:checked) {
+        background-color: #f7df1e;
+      }
+      label:has(.active) {
+        box-shadow: 0px 0px 8px 4px rgb(255, 0, 34);
+      }
+      label:nth-of-type(4n) {
+        margin-right: 12px;
+      }
+      label:has([data-mute]) {
+        margin-left: 16px;
+      }
+      label:has([data-mute]:checked) {
+        background-color: rgb(233, 4, 34);
+      }
+      label:has([data-solo]:checked) {
+        background-color: rgb(27, 197, 27);
+      }
+      h1 {
+        text-align: center;
+        text-transform: uppercase;
+      }
+      h1 span span {
+        color: white;
+      }
+
+      .container {
+        margin: 0 auto;
+        width: 95vw;
+      }
+      .buttons {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+      }
+      .button {
+        border: 1px solid #515151;
+        background-color: rgb(20, 20, 20);
+        color: yellow;
+        padding: 8px 8px 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        min-width: 150px;
+        display: flex;
+        justify-content: space-between;
+        min-height: 35px;
+        max-height: 35px;
+      }
+      .button:disabled {
+        cursor: not-allowed;
+      }
+      .light {
+        height: 12px;
+        width: 12px;
+        display: inline-block;
+        border: 1px solid #515151;
+        border-radius: 4px;
+      }
+      .on .light {
+        background-color: rgb(247, 223, 29);
+      }
+      [type="range"] {
+        min-width: 146px;
+        accent-color: rgb(247, 223, 29);
+      }
+
+      select {
+        min-width: 150px;
+        min-height: 35px;
+        max-height: 35px;
+        background-color: rgb(20, 20, 20);
+        color: rgb(247, 223, 29);
+        padding-left: 12px;
+        border-radius: 4px;
+        border: 1px solid #515151;
+      }
+
+      .bpm {
+        margin: 16px auto 48px auto;
+        display: flex;
+        justify-content: center;
+        width: 300px;
+        gap: 24px;
+        align-items: center;
+      }
+      .bpm div {
+        border-radius: 4px;
+        height: 64px;
+        min-width: 148px;
+        font-size: 32px;
+        border: 1px solid #515151;
+        background-color: rgb(20, 20, 20);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+    <div class="kick">
+      <span class="drum"><span>kick</span></span>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input data-mute="kick" type="checkbox" /></label>
+      <label><input data-solo="kick" type="checkbox" /></label>
+    </div>
+    <div class="snare">
+      <span class="drum"><span>snare</span></span>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input data-mute="snare" type="checkbox" /></label>
+      <label><input data-solo="snare" type="checkbox" /></label>
+    </div>
+    <div class="clap">
+      <span class="drum"><span>clap</span></span>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input data-mute="clap" type="checkbox" /></label>
+      <label><input data-solo="clap" type="checkbox" /></label>
+    </div>
+    <div class="closed-hats">
+      <span class="drum"><span>closed hi-hat</span></span>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input data-mute="closed-hat" type="checkbox" /></label>
+      <label><input data-solo="closed-hat" type="checkbox" /></label>
+    </div>
+    <div class="open-hats">
+      <span class="drum"><span>open hi-hat</span></span>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input data-mute="open-hat" type="checkbox" /></label>
+      <label><input data-solo="open-hat" type="checkbox" /></label>
+    </div>
+    <div class="toms">
+      <span class="drum"><span>tom</span></span>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input type="checkbox" /></label>
+      <label><input data-mute="tom" type="checkbox" /></label>
+      <label><input data-solo="tom" type="checkbox" /></label>
+    </div>
+    </div>
+  </body>
+</html>

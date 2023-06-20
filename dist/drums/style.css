@@ -1,0 +1,66 @@
+@font-face {
+  font-family: "Neutraface Text";
+  src: url("NeutrafaceText-Bold.woff2") format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  background: #000;
+  font-family: "Neutraface Text";
+  color: #f7df1e;
+}
+
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.buttons {
+  margin: 48px 0;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+.buttons button {
+  height: 150px;
+  aspect-ratio: 1/1;
+  display: inline-block;
+  font-family: "Neutraface Text";
+  font-size: 32px;
+  color: #f7df1e;
+  text-transform: uppercase;
+  border: 0;
+  background-color: rgb(20, 20, 20);
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px 4px rgb(255, 0, 34);
+  cursor: pointer;
+}
+
+.buttons button:active {
+  box-shadow: 0px 0px 8px 4px rgb(247, 223, 29);
+}
+
+button#code {
+  margin: 0 auto 16px auto;
+  display: flex;
+  border: 1px solid #f7df1e;
+  background-color: transparent;
+  color: #f7df1e;
+  padding: 12px 28px;
+  font-family: "Neutraface Text";
+  font-size: 16px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+pre {
+  margin: 0 auto 48px auto;
+  width: 90vw;
+}
+
+.hide {
+  display: none;
+}

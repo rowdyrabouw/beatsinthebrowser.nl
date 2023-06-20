@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background: #000;
+        font-family: "Neutraface Text";
+        color: #f7df1e;
+      }
+      h1 {
+        text-align: center;
+        text-transform: uppercase;
+      }
+      h1 span span {
+        color: white;
+      }
+      .pads {
+        margin: 24px 0;
+        display: flex;
+        gap: 24px;
+      }
+
+      .pad {
+        height: 150px;
+        aspect-ratio: 1/1;
+        display: inline-block;
+        border: 0;
+        background-color: rgb(20, 20, 20);
+        border-radius: 8px;
+        box-shadow: 0px 0px 8px 4px rgb(255, 0, 34);
+        cursor: pointer;
+      }
+      .pad:active,
+      .pad.active {
+        box-shadow: 0px 0px 8px 4px rgb(247, 223, 29);
+      }
+      .hide {
+        display: none !important;
+      }
+      .container {
+        margin: 0 auto;
+        width: 672px;
+      }
+      .buttons {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+      }
+      .button {
+        border: 1px solid #515151;
+        background-color: rgb(20, 20, 20);
+        color: yellow;
+        padding: 8px 8px 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        min-width: 150px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .light {
+        height: 12px;
+        width: 12px;
+        display: inline-block;
+        border: 1px solid #515151;
+        border-radius: 4px;
+      }
+      .on .light {
+        background-color: rgb(247, 223, 29);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div style="height: 50px; background-image: url('headphones.svg'); background-position: center; background-repeat: no-repeat"></div>
+      <h1>MIDI - Sampling<span id="device"></span></h1>
+      <div class="container">
+        <div class="buttons">
+          <button class="button" id="ctx">AudioContext<span class="light"></span></button>
+          <button class="button" id="initMidi">Midi<span class="light"></span></button>
+        </div>
+        <div class="pads">
+          <button class="pad" data-note="16" data-wav="909-kick"></button>
+          <button class="pad" data-note="17" data-wav="909-clap"></button>
+          <button class="pad" data-note="18" data-wav="909-snare"></button>
+          <button class="pad" data-note="19" data-wav="turn-up-the-bass"></button>
+        </div>
+        <div class="pads">
+          <button class="pad" data-note="12" data-wav="909-closed-hat"></button>
+          <button class="pad" data-note="13" data-wav="909-open-hat"></button>
+          <button class="pad" data-note="14" data-wav="909-cymbal"></button>
+          <button class="pad" data-note="15" data-wav="909-tom"></button>
+        </div>
+      </div>
+    </main>
+    <script>
+      const ctx = new AudioContext();
+
+      const btnCtx = document.querySelector("#ctx");
+      btnCtx.addEventListener("click", () => {
+        ctx.resume();
+      });
+
+      ctx.onstatechange = () => {
+        if (ctx.state === "running") {
+          btnCtx.classList.add("on");
+        } else {
+          btnCtx.classList.remove("on");
+        }
+      };
+
+      // fetch the audio file and decode the data
+      loadFile = async (wav) => {
+        const response = await fetch(wav);
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+        return audioBuffer;
+      };
+
+      const playWav = (audioBuffer) => {
+        const wav = new AudioBufferSourceNode(ctx, { buffer: audioBuffer });
+        wav.connect(ctx.destination);
+        wav.start();
+      };
+
+      const onMIDIFailure = () => {
+        console.error("Could not access your MIDI devices.");
+      };
+
+      const onMIDISuccess = (midiAccess) => {
+        midiAccess.addEventListener("statechange", (event) => {
+          document.querySelector("#device").innerHTML = ` (<span>${event.port.manufacturer} ${event.port.name}</span>)`;
+          console.log(`Name: ${event.port.name}, Brand: ${event.port.manufacturer}, State: ${event.port.state}, Type: ${event.port.type}`);
+        });
+
+        for (let input of midiAccess.inputs.values()) {
+          input.onmidimessage = processMIDIMessage;
+        }
+      };
+
+      const pads = document.querySelectorAll(".pad");
+      pads.forEach((pad) => {
+        pad.addEventListener("click", async () => {
+          const sample = await loadFile(`${pad.dataset.wav}.wav`);
+          playWav(sample);
+        });
+      });
+
+      const btnMidi = document.querySelector("#initMidi");
+      btnMidi.addEventListener("click", () => {
+        initMidi();
+        btnMidi.classList.add("on");
+      });
+
+      if (navigator.requestMIDIAccess) {
+        console.info("This browser supports WebMIDI");
+      } else {
+        console.error("WebMIDI is not supported in this browser.");
+        btnMidi.classList.add("hide");
+      }
+
+      const initMidi = async () => {
+        try {
+          const midiAccess = await navigator.requestMIDIAccess();
+          onMIDISuccess(midiAccess);
+        } catch (err) {
+          onMIDIFailure(err);
+        }
+      };
+
+      const processMIDIMessage = (midiMessage) => {
+        const note = midiMessage.data[1];
+        if ([12, 13, 14, 15, 16, 17, 18, 19].includes(note)) {
+          const pad = document.querySelector(`[data-note="${note}"]`);
+          pad.classList.add("active");
+          pad.click();
+          setTimeout(() => {
+            pad.classList.remove("active");
+          }, 150);
+        }
+      };
+    </script>
+  </body>
+</html>

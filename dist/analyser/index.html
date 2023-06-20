@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      @font-face {
+        font-family: "Neutraface Text";
+        src: url("NeutrafaceText-Bold.woff2") format("woff2");
+        font-style: normal;
+        font-display: swap;
+      }
+
+      body {
+        background-color: #000;
+        font-family: "Neutraface Text";
+        color: #f7df1e;
+      }
+      h1,
+      p {
+        text-align: center;
+      }
+      h1 {
+        text-transform: uppercase;
+      }
+      button {
+        padding: 8px 16px;
+        min-width: 400px;
+        height: 54px;
+        cursor: pointer;
+        font-size: 14px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+        border: 0;
+        border-radius: 24px;
+      }
+      canvas {
+        box-sizing: border-box;
+        width: 408px;
+        height: 408px;
+        background: rgb(20, 20, 20);
+        border: 4px solid rgb(45, 41, 45);
+        border-radius: 8px;
+        padding: 12px;
+      }
+      #peakMeter {
+        border: 4px solid rgb(45, 41, 45);
+        border-radius: 8px;
+      }
+      .play-button::before,
+      .play-button.playing::before {
+        content: "";
+        display: inline-block;
+        border: 0;
+        background: transparent;
+        box-sizing: border-box;
+        width: 0;
+        height: 12px;
+        margin-right: 10px;
+
+        border-color: transparent transparent transparent #000;
+        transition: 100ms all ease;
+        cursor: pointer;
+
+        border-style: solid;
+        border-width: 6px 0 6px 8px;
+      }
+
+      .play-button.playing::before {
+        border-style: double;
+        border-width: 0px 0 0px 8px;
+      }
+      .container {
+        background-color: #f7df1e;
+        width: 200px;
+        padding: 16px;
+        color: rgb(20, 20, 20);
+      }
+      audio {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="display: flex; gap: 24px; margin-bottom: 24px; justify-content: center; align-items: center">
+      <div>
+        <div style="height: 50px; background-image: url('headphones.svg'); background-position: center; background-repeat: no-repeat"></div>
+        <h1>Analyzing and Visualizing Audio</h1>
+        <!-- audio-->
+        <audio id="audioPlayer" preload="metadata" controls="controls">
+          <source src="atomic-playboy.mp3" type="audio/mpeg" />
+        </audio>
+        <div style="display: flex; justify-content: center">
+          <button class="container" onclick="toggleAudio()">
+            <div class="play-button">
+              <span style="display: inline-block; width: 100px"><span class="current">0:00</span> / <span class="duration">0:00</span></span> Space
+              Trax - Atomic Playboy
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div style="display: grid; grid-auto-flow: column; justify-content: center; column-gap: 16px">
+      <div id="record"></div>
+      <canvas id="analyser_render2"></canvas>
+      <div id="peakMeter" style="height: 400px; width: 180px"></div>
+      <canvas id="analyser_render"></canvas>
+    </div>
+
+    <script src="peakmeter.js"></script>
+
+    <script>
+      const audioCtx = new AudioContext();
+      const audioElement = document.getElementById("audioPlayer");
+      const meterElement = document.getElementById("peakMeter");
+
+      const sourceNode = audioCtx.createMediaElementSource(audioElement);
+      sourceNode.connect(audioCtx.destination);
+
+      const test = new webAudioPeakMeter.WebAudioPeakMeter(sourceNode, meterElement, {
+        vertical: true,
+        tickColor: "#f7df1e",
+        labelColor: "#f7df1e",
+        borderSize: 12,
+        fontSize: 12,
+        audioMeterStandard: "true-peak",
+        backgroundColor: "rgb(20, 20, 20)",
+        gradient: ["#ff0000 10%", "#f7df1e 50%", "#36cb20 85%", "#008800 100%"],
+      });
+    </script>
+
+    <script>
+      var canvas, canvas2, ctx, source, context, analyser, fbc_array, bars, bar_x, bar_width, bar_height;
+      // Initialize the MP3 player after the page loads all of its HTML into the window
+      // window.addEventListener("load", initMp3Player, false);
+      // function initMp3Player() {
+      // document.getElementById("audio_box").appendChild(audio);
+      // const audio = document.getElementById("the-audio");
+      // audioCtx = new AudioContext(); // AudioContext object instance
+      analyser = audioCtx.createAnalyser(); // AnalyserNode method
+      canvas = document.getElementById("analyser_render");
+      canvas2 = document.getElementById("analyser_render2");
+      ctx = canvas.getContext("2d");
+      ctx2 = canvas2.getContext("2d");
+      // Re-route audio playback into the processing graph of the AudioContext
+      // source = audioCtx.createMediaElementSource(audioElement);
+      // source.connect(analyser);
+      sourceNode.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      frameLooper();
+      // }
+      // frameLooper() animates any style of graphics you wish to the audio frequency
+      // Looping at the default frame rate that the browser provides(approx. 60 FPS)
+      function frameLooper() {
+        // console.error("framelooper");
+        analyser.fftSize = 2048;
+        const bufferLength = analyser.fftSize;
+        WIDTH = canvas.width;
+        HEIGHT = canvas.height;
+        requestAnimationFrame(frameLooper);
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(dataArray);
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+        ctx2.clearRect(0, 0, canvas2.width, canvas2.height); // Clear the canvas
+
+        ctx2.fillStyle = "#F7DF1D"; // Color of the bars
+        bars = 100;
+        for (var i = 0; i < bars; i++) {
+          bar_x = i * 3;
+          bar_width = 2;
+          bar_height = -(dataArray[i] / 2);
+          //  fillRect( x, y, width, height ) // Explanation of the parameters below
+          ctx2.fillRect(bar_x, canvas2.height, bar_width, bar_height);
+        }
+
+        // https://github.com/mdn/webaudio-examples/blob/main/voice-change-o-matic/scripts/app.js
+        analyser.getByteTimeDomainData(dataArray);
+
+        // console.error(dataArray);
+
+        ctx.fillStyle = "rgb(20, 20, 20)";
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "rgb(247, 223, 30)";
+
+        ctx.beginPath();
+
+        const sliceWidth = (WIDTH * 2.0) / bufferLength;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+          let v = dataArray[i] / 128.0;
+          let y = (v * HEIGHT) / 2;
+
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+
+          x += sliceWidth;
+        }
+
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
+      }
+    </script>
+    <script src="player.js" defer></script>
+  </body>
+</html>
