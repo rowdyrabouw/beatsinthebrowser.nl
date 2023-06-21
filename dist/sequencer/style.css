@@ -17,6 +17,7 @@ span.drum {
 }
 span.drum span {
   position: absolute;
+  right: 4px;
   line-height: 60px;
 }
 label {
