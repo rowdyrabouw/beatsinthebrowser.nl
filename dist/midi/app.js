@@ -32,7 +32,7 @@ const handleInput = (input) => {
     case 128: // noteOff
       document.querySelector(`[data-note="${note}"]`).classList.remove("active");
       break;
-    case 176: // nobs
+    case 176: // knobs
       if (note === 70 || note === 71) {
         const knob = document.querySelector(`[data-note="${note}"]`);
         knob.classList.add("active");
