@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sequencer</title>
+    <script src="Tone.min.js"></script>
+    <script src="webmidi.js"></script>
+    <script defer src="sequencer.js"></script>
+    <script defer src="patterns.js"></script>
+    <script defer src="heartrate.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <div style="height: 50px; background-image: url('headphones.svg'); background-position: center; background-repeat: no-repeat"></div>
+    <h1>Sequencer<span id="device"></span></h1>
+    <div class="container">
+      <div class="buttons-header">
+        <div class="knobs">
+          <div>
+            <div class="knob-surround" data-note="k70">
+              <div class="knob"></div>
+            </div>
+            <div class="input">
+              <input id="pan-low" type="range" min="-1" max="1" step="0.01" value="0"></input>pan low
+            </div>
+          </div>
+          <div>
+            <div class="knob-surround" data-note="k71">
+              <div class="knob"></div>
+            </div>
+            <div class="input">
+              <input id="pan-high" type="range" min="-1" max="1" step="0.01" value="0"></input>pan high
+            </div>
+          </div>
+          <div>
+            <div class="knob-surround" data-note="k72">
+              <div class="knob"></div>
+            </div>
+            <div class="input">
+              <input id="pitch" type="range" min="-50" max="50" step="1" value="0"></input>pitch
+            </div>
+          </div>
+          <div>
+            <div class="knob-surround" data-note="k73">
+              <div class="knob"></div>
+            </div>
+            <div class="input">
+              <input id="bpm" type="range" min="0" max="200" step="1" value="120"></input>bpm
+            </div>
+          </div>
+        </div>
+          <div>
+            <div class="bpm"><span id="bpmText"></span>&nbsp;bpm</div>
+          </div>
+        <div class="buttons">
+          <button class="button" id="init">Init<span class="light"></span></button>
+          <button class="button" id="initMidi">Midi<span class="light"></span></button>
+        </div>
+        <div class="buttons">
+          <button class="button" id="heart">hbpm<span class="light"></span></button>
+          <select onchange="loadPattern(this.options[this.selectedIndex].value)">
+            <option value="empty.json"></option>
+            <option value="soul2soul.json">Soul II Soul</option>
+            <option value="amy.json">Amy Winehouse</option>
+            <option value="faithless.json">Faithless</option>
+          </select>
+        </div>
+        <div id="recordings"><audio controls src="/media/cc0-audio/t-rex-roar.mp3"></audio></div>
+      </div>
+
+    <div class="kick">
+      <label><input data-mute="kick" type="checkbox" /></label>
+      <label><input type="checkbox" data-note="54"/><div></div></label>
+      <label><input type="checkbox" data-note="55"/><div></div></label>
+      <label><input type="checkbox" data-note="56"/><div></div></label>
+      <label><input type="checkbox" data-note="57" /><div></div></label>
+      <label><input type="checkbox" data-note="58" /><div></div></label>
+      <label><input type="checkbox" data-note="59" /><div></div></label>
+      <label><input type="checkbox" data-note="60" /><div></div></label>
+      <label><input type="checkbox" data-note="61" /><div></div></label>
+      <label><input type="checkbox" data-note="62" /><div></div></label>
+      <label><input type="checkbox" data-note="63" /><div></div></label>
+      <label><input type="checkbox" data-note="64" /><div></div></label>
+      <label><input type="checkbox" data-note="65" /><div></div></label>
+      <label><input type="checkbox" data-note="66" /><div></div></label>
+      <label><input type="checkbox" data-note="67" /><div></div></label>
+      <label><input type="checkbox" data-note="68" /><div></div></label>
+      <label><input type="checkbox" data-note="69" /><div></div></label>
+    </div>
+    <div class="clap">
+      <label><input data-mute="clap" type="checkbox" /></label>
+      <label><input type="checkbox" data-note="70" /><div></div></label>
+      <label><input type="checkbox" data-note="71" /><div></div></label>
+      <label><input type="checkbox" data-note="72" /><div></div></label>
+      <label><input type="checkbox" data-note="73" /><div></div></label>
+      <label><input type="checkbox" data-note="74" /><div></div></label>
+      <label><input type="checkbox" data-note="75" /><div></div></label>
+      <label><input type="checkbox" data-note="76" /><div></div></label>
+      <label><input type="checkbox" data-note="77" /><div></div></label>
+      <label><input type="checkbox" data-note="78" /><div></div></label>
+      <label><input type="checkbox" data-note="79" /><div></div></label>
+      <label><input type="checkbox" data-note="80" /><div></div></label>
+      <label><input type="checkbox" data-note="81" /><div></div></label>
+      <label><input type="checkbox" data-note="82" /><div></div></label>
+      <label><input type="checkbox" data-note="83" /><div></div></label>
+      <label><input type="checkbox" data-note="84" /><div></div></label>
+      <label><input type="checkbox" data-note="85" /><div></div></label>
+    </div>
+    <div class="closed-hats">
+      <label><input data-mute="closed-hat" type="checkbox" /></label>
+      <label><input type="checkbox" data-note="86" /><div></div></label>
+      <label><input type="checkbox" data-note="87" /><div></div></label>
+      <label><input type="checkbox" data-note="88" /><div></div></label>
+      <label><input type="checkbox" data-note="89" /><div></div></label>
+      <label><input type="checkbox" data-note="90" /><div></div></label>
+      <label><input type="checkbox" data-note="91" /><div></div></label>
+      <label><input type="checkbox" data-note="92" /><div></div></label>
+      <label><input type="checkbox" data-note="93" /><div></div></label>
+      <label><input type="checkbox" data-note="94" /><div></div></label>
+      <label><input type="checkbox" data-note="95" /><div></div></label>
+      <label><input type="checkbox" data-note="96" /><div></div></label>
+      <label><input type="checkbox" data-note="97" /><div></div></label>
+      <label><input type="checkbox" data-note="98" /><div></div></label>
+      <label><input type="checkbox" data-note="99" /><div></div></label>
+      <label><input type="checkbox" data-note="100" /><div></div></label>
+      <label><input type="checkbox" data-note="101" /><div></div></label>
+    </div>
+    <div class="open-hats">
+      <label><input data-mute="open-hat" type="checkbox" /></label>
+      <label><input type="checkbox" data-note="102" /><div></div></label>
+      <label><input type="checkbox" data-note="103" /><div></div></label>
+      <label><input type="checkbox" data-note="104" /><div></div></label>
+      <label><input type="checkbox" data-note="105" /><div></div></label>
+      <label><input type="checkbox" data-note="106" /><div></div></label>
+      <label><input type="checkbox" data-note="107" /><div></div></label>
+      <label><input type="checkbox" data-note="108" /><div></div></label>
+      <label><input type="checkbox" data-note="109" /><div></div></label>
+      <label><input type="checkbox" data-note="110" /><div></div></label>
+      <label><input type="checkbox" data-note="111" /><div></div></label>
+      <label><input type="checkbox" data-note="112" /><div></div></label>
+      <label><input type="checkbox" data-note="113" /><div></div></label>
+      <label><input type="checkbox" data-note="114" /><div></div></label>
+      <label><input type="checkbox" data-note="115" /><div></div></label>
+      <label><input type="checkbox" data-note="116" /><div></div></label>
+      <label><input type="checkbox" data-note="117" /><div></div></label>
+    </div>
+    <div class="buttons-footer">
+      <button class="button" id="start">Start</button>
+      <button class="button" id="stop">Stop</button>
+      <button class="button" id="record">Record</button>
+      </div>
+    </div>
+  </body>
+</html>

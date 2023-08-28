@@ -1,0 +1,9 @@
+[
+  { "bpm": 106 },
+  { "drum": "kick", "pattern": [1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0] },
+  { "drum": "snare", "pattern": [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0] },
+  { "drum": "clap", "pattern": [] },
+  { "drum": "closed-hats", "pattern": [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0] },
+  { "drum": "open-hats", "pattern": [] },
+  { "drum": "toms", "pattern": [] }
+]
