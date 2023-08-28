@@ -157,6 +157,7 @@
         WIDTH = canvas.width;
         HEIGHT = canvas.height;
         requestAnimationFrame(frameLooper);
+        // use Float32Array instead of Uint8Array
         dataArray = new Uint8Array(analyser.frequencyBinCount);
         analyser.getByteFrequencyData(dataArray);
         ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
