@@ -13,11 +13,9 @@ const loadPattern = (json) => {
     document.querySelector('#bpmText').innerHTML = bpm;
     Tone.Transport.bpm.value = bpm;
     checkPads(data, 'kick');
-    checkPads(data, 'snare');
     checkPads(data, 'clap');
     checkPads(data, 'closed-hats');
     checkPads(data, 'open-hats');
-    checkPads(data, 'toms');
   });
 }
 
