@@ -83,16 +83,16 @@
           <button class="button" id="initMidi">Midi<span class="light"></span></button>
         </div>
         <div class="pads">
-          <button class="pad" data-note="16" data-wav="909-kick"></button>
-          <button class="pad" data-note="17" data-wav="909-clap"></button>
-          <button class="pad" data-note="18" data-wav="909-snare"></button>
-          <button class="pad" data-note="19" data-wav="turn-up-the-bass"></button>
+          <button class="pad" data-note="16-40" data-wav="909-kick"></button>
+          <button class="pad" data-note="17-41" data-wav="909-clap"></button>
+          <button class="pad" data-note="18-42" data-wav="909-snare"></button>
+          <button class="pad" data-note="19-43" data-wav="turn-up-the-bass"></button>
         </div>
         <div class="pads">
-          <button class="pad" data-note="12" data-wav="909-closed-hat"></button>
-          <button class="pad" data-note="13" data-wav="909-open-hat"></button>
-          <button class="pad" data-note="14" data-wav="909-cymbal"></button>
-          <button class="pad" data-note="15" data-wav="909-tom"></button>
+          <button class="pad" data-note="12-36" data-wav="909-closed-hat"></button>
+          <button class="pad" data-note="13-37" data-wav="909-open-hat"></button>
+          <button class="pad" data-note="14-38" data-wav="909-cymbal"></button>
+          <button class="pad" data-note="15-39" data-wav="909-tom"></button>
         </div>
       </div>
     </main>
@@ -173,14 +173,19 @@
 
       const processMIDIMessage = (midiMessage) => {
         const note = midiMessage.data[1];
-        if ([12, 13, 14, 15, 16, 17, 18, 19].includes(note)) {
-          const pad = document.querySelector(`[data-note="${note}"]`);
+        const velocity = midiMessage.data[2];
+        console.log(note, velocity);
+        // LDP = 12 - 19
+        // MPK = 36 - 43
+        if ([12, 13, 14, 15, 16, 17, 18, 19, 36, 37, 38, 39, 40, 41, 42, 43].includes(note) && velocity > 0) {
+          const pad = document.querySelector(`[data-note*="${note}"]`);
           pad.classList.add("active");
           pad.click();
           setTimeout(() => {
             pad.classList.remove("active");
           }, 150);
         }
+        //
       };
     </script>
   </body>
