@@ -154,6 +154,7 @@ const processMIDIMessage = (midiMessage, deviceId) => {
   // deviceId
   // 1523779451 = Fire
   // 1142489333 = LPD
+  // -760933288 = MPK
   const note = midiMessage[1];
   const velocity = midiMessage[2];
   if (velocity > 0 && deviceId == 1523779451) {
@@ -187,8 +188,8 @@ const processMIDIMessage = (midiMessage, deviceId) => {
       }
     }
   }
-  else if (velocity > 0 && deviceId == 1142489333) {
-    // LPD
+  else if (velocity > 0 && (deviceId == 1142489333 || deviceId == -760933288)) {
+    // LPD or MPK
     console.log(midiMessage);
     if (note >= 70 || note <= 73) {
       const knob = document.querySelector(`[data-note="k${note}"]`);
@@ -256,6 +257,7 @@ const processMIDIMessage = (midiMessage, deviceId) => {
 const webMidiEnabled = () => {
   WebMidi.inputs.forEach((input) => {
     // console.log(input.manufacturer, input.name);
+    // console.log(input);
     document.querySelector("#device").innerHTML += ` (<span>${input.name}</span>)`;
   });
   WebMidi.inputs.forEach((input) =>
