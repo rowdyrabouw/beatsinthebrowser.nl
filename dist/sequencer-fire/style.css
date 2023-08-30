@@ -147,26 +147,39 @@ h1 span span {
   border-radius: 4px;
 }
 
+.buttons-footer .button:active {
+  background-color: rgb(130, 14, 29);
+}
+
+.buttons-footer .button svg {
+  fill: rgb(247, 223, 29);
+  height: 20px;
+}
+
 @keyframes blinkingBackground {
   0% {
-    background-color: rgb(255, 0, 34);
+    background-color: rgb(179, 6, 29);
   }
   25% {
     background-color: rgb(130, 14, 29);
   }
   50% {
-    background-color: rgb(255, 0, 34);
+    background-color: rgb(179, 6, 29);
   }
   75% {
     background-color: rgb(130, 14, 29);
   }
   100% {
-    background-color: rgb(255, 0, 34);
+    background-color: rgb(179, 6, 29);
   }
 }
 
 .button.active {
   animation: blinkingBackground 2s infinite;
+}
+
+.button.active svg {
+  fill: rgb(0, 0, 0);
 }
 
 .button:disabled {
@@ -216,8 +229,8 @@ select {
 }
 
 audio::-webkit-media-controls-enclosure {
-  width: 100%;
-  border-radius: 1px !important;
+  width: 80%;
+  border-radius: 4px !important;
 }
 
 audio::-webkit-media-controls-panel {
