@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <script defer src="app.js"></script>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <title>MIDI - Commands</title>
     <style>
       .keyboard {
@@ -79,5 +79,58 @@
         </div>
       </div>
     </main>
+    <!-- temporary duplicated in each file -->
+    <button id="menuBtn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+        <path
+          d="M0 96C0 60.7 28.7 32 64 32H384c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM96 288a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm32-128a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM96 384a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm96-248c-13.3 0-24 10.7-24 24s10.7 24 24 24H352c13.3 0 24-10.7 24-24s-10.7-24-24-24H192zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24H352c13.3 0 24-10.7 24-24s-10.7-24-24-24H192zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24H352c13.3 0 24-10.7 24-24s-10.7-24-24-24H192z"
+        />
+      </svg>
+    </button>
+    <ul id="menu">
+      <li><a href="/generate">Generating Sounds</a></li>
+      <li><a href="/midi">MIDI commands</a></li>
+      <li><a href="/mpk">MIDI Synthesising</a></li>
+      <li><a href="/drums">Synthesising Drums</a></li>
+      <li><a href="/ldp8">MIDI Sampling</a></li>
+      <li><a href="/sequencer">Sequencer</a></li>
+      <li><a href="/sequencer">Sequencer (Bluetooth)</a></li>
+      <li><a href="/analyser">Analyser</a></li>
+    </ul>
+    <script>
+      document.querySelector("#menuBtn").addEventListener("click", () => {
+        document.querySelector("#menu").style.display = "block";
+      });
+    </script>
+    <style>
+      #menuBtn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: black;
+        cursor: pointer;
+        border: 0;
+        & svg {
+          fill: #f7df1e;
+          height: 30px;
+        }
+      }
+      #menu {
+        display: none;
+        position: absolute;
+        top: 40px;
+        left: 25px;
+        z-index: 10;
+        background-color: #f7df1e;
+        padding: 32px;
+        border-radius: 4px;
+        & a {
+          color: rgb(0, 0, 0);
+          font-size: 18px;
+          line-height: 2;
+          text-decoration: none;
+        }
+      }
+    </style>
   </body>
 </html>

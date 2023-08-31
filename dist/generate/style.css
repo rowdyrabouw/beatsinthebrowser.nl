@@ -23,7 +23,7 @@ h1 {
   gap: 24px;
 }
 
-button {
+.button {
   height: 150px;
   aspect-ratio: 1/1;
   display: inline-block;
