@@ -17,13 +17,17 @@ const pitchShift = new Tone.PitchShift({
 Tone.Transport.bpm.value = bpm;
 document.querySelector('#bpmText').innerHTML = bpm;
 
-const kick = new Tone.Player('wav/909-kick.wav').chain(pannerLow, pitchShift, recorder);
-const clap = new Tone.Player('wav/909-clap.wav').chain(pannerLow, pitchShift, recorder);
+const voice = new Tone.Player('wav/turn-up-the-bass.wav').chain(pitchShift, recorder);
+const voice2 = new Tone.Player('wav/let-the-music-take-control.wav').chain(pitchShift, recorder);
+const kick = new Tone.Player('wav/909-kick.wav').chain(pannerLow, recorder);
+const clap = new Tone.Player('wav/909-clap.wav').chain(pannerLow, recorder);
 const closedHat = new Tone.Player('wav/909-closed-hat.wav').chain(pannerHigh, recorder);
 const openHat = new Tone.Player('wav/909-open-hat.wav').chain(pannerHigh, recorder);
 
 const repeat = (time) => {
   let step = index % steps;
+  const voices = document.querySelector(`.voice label:nth-child(${step + 2}) input`);
+  const muteVoices = document.querySelector('.voice [data-mute]');
   const kicks = document.querySelector(`.kick label:nth-child(${step + 2}) input`);
   const muteKicks = document.querySelector('.kick [data-mute]');
   let claps = document.querySelector(`.clap label:nth-child(${step + 2}) input`);
@@ -33,21 +37,29 @@ const repeat = (time) => {
   let openHats = document.querySelector(`.open-hats label:nth-child(${step + 2}) input`);
   let muteOpenHats = document.querySelector('.open-hats [data-mute]');
 
+  voices.classList.add('active');
   kicks.classList.add('active');
   claps.classList.add('active');
   closedHats.classList.add('active');
   openHats.classList.add('active');
 
   step = step === 0 ? steps : step;
+  const voicePrev = document.querySelector(`.voice label:nth-child(${step + 1}) input`);
   const kicksPrev = document.querySelector(`.kick label:nth-child(${step + 1}) input`);
   const clapsPrev = document.querySelector(`.clap label:nth-child(${step + 1}) input`);
   const closedHatsPrev = document.querySelector(`.closed-hats label:nth-child(${step + 1}) input`);
   const openHatsPrev = document.querySelector(`.open-hats label:nth-child(${step + 1}) input`);
 
+  voicePrev.classList.remove('active');
   kicksPrev.classList.remove('active');
   clapsPrev.classList.remove('active');
   closedHatsPrev.classList.remove('active');
   openHatsPrev.classList.remove('active');
+
+
+  if (!muteVoices.checked && voices.checked) {
+    voice.start(time);
+  }
 
   if (!muteKicks.checked && kicks.checked) {
     kick.start(time);
@@ -66,6 +78,23 @@ const repeat = (time) => {
   }
 
   index++;
+}
+
+const recorder = new Tone.Recorder();
+
+const record = async () => {
+  await recorder.start();
+}
+
+const stop = async () => {
+  const recording = await recorder.stop();
+
+  const url = URL.createObjectURL(recording);
+  const audio = document.createElement('audio');
+  audio.controls = true;
+  audio.src = url;
+
+  document.querySelector('#recordings').append(audio);
 }
 
 const btnRecord = document.querySelector('#record');
@@ -189,8 +218,13 @@ const processMIDIMessage = (midiMessage, deviceId) => {
   }
   else if (velocity > 0 && (deviceId == 1142489333 || deviceId == -760933288)) {
     // LPD or MPK
-    console.log(midiMessage);
-    if (note >= 70 || note <= 73) {
+    if (note === 39) {
+      voice2.start();
+    }
+    else if (note >= 36 && note <= 43) {
+      document.querySelector(`[data-note="${note}"]`).click();
+    }
+    else if (note >= 70 && note <= 73) {
       const knob = document.querySelector(`[data-note="k${note}"]`);
       knob.classList.add("active");
       setTimeout(() => {
