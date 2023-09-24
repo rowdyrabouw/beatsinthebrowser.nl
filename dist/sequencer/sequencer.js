@@ -80,23 +80,6 @@ const repeat = (time) => {
   index++;
 }
 
-const recorder = new Tone.Recorder();
-
-const record = async () => {
-  await recorder.start();
-}
-
-const stop = async () => {
-  const recording = await recorder.stop();
-
-  const url = URL.createObjectURL(recording);
-  const audio = document.createElement('audio');
-  audio.controls = true;
-  audio.src = url;
-
-  document.querySelector('#recordings').append(audio);
-}
-
 const btnRecord = document.querySelector('#record');
 btnRecord.addEventListener('click', async () => {
   if (!isRecording) {
