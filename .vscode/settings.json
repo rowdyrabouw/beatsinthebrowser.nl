@@ -9,5 +9,6 @@
   "editor.fontSize": 16,
   // "editor.fontSize": 20,
   "editor.fontFamily": "'Mono Lisa', Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontLigatures": true,
   "editor.renderWhitespace": "trailing"
 }
