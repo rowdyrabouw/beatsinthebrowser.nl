@@ -96,6 +96,7 @@ btnRecord.addEventListener('click', async () => {
     const url = URL.createObjectURL(recording);
     const audio = document.createElement('audio');
     audio.controls = true;
+    audio.autoplay = true;
     audio.src = url;
     document.querySelector('#recordings').append(audio);
   }

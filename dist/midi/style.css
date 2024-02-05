@@ -113,6 +113,7 @@ h1 span span {
 .keys {
   display: flex;
   position: relative;
+  display: none;
 }
 .keys button {
   border: 1px solid #414141;
