@@ -286,3 +286,23 @@ audio::-webkit-media-controls-panel {
   border-radius: 50%;
   z-index: 10;
 }
+.hide {
+  display: none !important;
+}
+.karaoke {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  height: 100px;
+  font-size: 4rem;
+  span {
+    color: rgb(120, 120, 120);
+  }
+  span:first-child {
+    margin-right: 20px;
+  }
+  span.active {
+    color: rgb(247, 223, 29);
+  }
+}

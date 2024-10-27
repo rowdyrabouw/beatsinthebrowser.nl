@@ -50,6 +50,47 @@ const repeat = (time) => {
   const closedHatsPrev = document.querySelector(`.closed-hats label:nth-child(${step + 1}) input`);
   const openHatsPrev = document.querySelector(`.open-hats label:nth-child(${step + 1}) input`);
 
+  const weWill = document.querySelector(`#we-will`);
+  const rockYou = document.querySelector(`#rock-you`);
+
+  switch (step) {
+    case 1:
+      weWill.classList.remove('hide');
+      weWill.firstChild.classList.add('active');
+      break;
+    case 2:
+      weWill.lastChild.classList.add('active');
+    case 4:
+      weWill.classList.remove('hide');
+      break;
+    case 5:
+      weWill.classList.remove('hide');
+      weWill.firstChild.classList.add('active');
+      break;
+    case 6:
+      weWill.lastChild.classList.add('active');
+      break;
+    case 8:
+      rockYou.classList.remove('hide');
+      break;
+    case 9:
+      rockYou.firstChild.classList.add('active');
+      break;
+    case 10:
+      rockYou.lastChild.classList.add('active');
+      break;
+    case 16:
+      weWill.classList.remove('hide');
+      break;
+    default:
+      weWill.firstChild.classList.remove('active');
+      weWill.lastChild.classList.remove('active');
+      weWill.classList.add('hide');
+      rockYou.firstChild.classList.remove('active');
+      rockYou.lastChild.classList.remove('active');
+      rockYou.classList.add('hide');
+  }
+
   voicePrev.classList.remove('active');
   kicksPrev.classList.remove('active');
   clapsPrev.classList.remove('active');
@@ -101,6 +142,12 @@ btnRecord.addEventListener('click', async () => {
     document.querySelector('#recordings').append(audio);
   }
 });
+
+const btnKaraoke = document.querySelector('#karaoke');
+btnKaraoke.addEventListener('click', async () => {
+  document.querySelector('.voice').classList.add('hide');
+  document.querySelector('.karaoke').classList.remove('hide');
+})
 
 const initSequencer = () => {
   Tone.Transport.scheduleRepeat((time) => {
