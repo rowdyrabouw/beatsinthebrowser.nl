@@ -179,16 +179,34 @@ document.querySelector('#stop').addEventListener('click', () => {
 
 document.querySelector('#pan-low').addEventListener('input', (event) => {
   pannerLow.pan.rampTo(+event.target.value, 0.1);
+  if (event.target.value == 0) {
+    document.querySelector('#pan-low').classList.add('at0');
+  }
+  else {
+    document.querySelector('#pan-low').classList.remove('at0');
+  }
 })
 
 document.querySelector('#pan-high').addEventListener('input', (event) => {
   pannerHigh.pan.rampTo(+event.target.value, 0.1);
-})
+  if (event.target.value == 0) {
+    document.querySelector('#pan-high').classList.add('at0');
+  }
+  else {
+    document.querySelector('#pan-high').classList.remove('at0');
+  }
+});
 
 document.querySelector('#pitch').addEventListener('input', (event) => {
   pitchShift.pitch = parseFloat(event.target.value);
   pitchShift.windowSize = event.target.value == 0 ? 0.000001 : 0.01;
-})
+  if (event.target.value == 0) {
+    document.querySelector('#pitch').classList.add('at0');
+  }
+  else {
+    document.querySelector('#pitch').classList.remove('at0');
+  }
+});
 
 document.querySelector('#bpm').addEventListener('input', (event) => {
   document.querySelector('#bpmText').innerHTML = event.target.value;

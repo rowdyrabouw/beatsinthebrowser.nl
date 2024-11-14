@@ -306,3 +306,8 @@ audio::-webkit-media-controls-panel {
     color: rgb(247, 223, 29);
   }
 }
+
+.at0 {
+  color: rgb(47, 247, 29);
+  accent-color: rgb(47, 247, 29);
+}
