@@ -13,12 +13,14 @@ const getHeartRate = async () => {
   const heartRateService = await gattServer?.getPrimaryService(0x180d);
   const heartRate = await heartRateService?.getCharacteristic(0x2a37);
   await heartRate.startNotifications();
+  btnHeart.classList.add("on");
+  btnHeart.disabled = true;
 
   heartRate.addEventListener("characteristicvaluechanged", (e) => {
     const bpm = e.target.value.getUint8(1);
     console.info("heartRate", bpm);
     Tone.Transport.bpm.value = bpm;
-    document.querySelector('#bpmText').innerHTML = bpm;
+    document.querySelector("#bpmText").innerHTML = bpm;
   });
 };
 
